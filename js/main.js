@@ -7,18 +7,17 @@ var week_offset = 0;
 
 // Wait for dom before loading
 $(document).ready(function () {
-
+    
     // Open up a pop-up page for oauth
     $("#signin").click(function () {
-            $(".signin-container, #signin").css({"display": "none"});
-            $("#main").css({"display": "inherit"});
         var token = prompt("Enter Token", "CnkMgGJuSYKY9LMj71ux6n4UVA5S");
+
         if (token !== undefined) {
             setOauthToken(token);
             window.swagger.clientAuthorizations.authz.oauth2 = new SwaggerClient.ApiKeyAuthorization("Authorization",
                             "Bearer " + getOauthToken(), "header");
             analyzeReadings();
-            
+            updateUI();
         }
     });
 
@@ -28,6 +27,37 @@ $(document).ready(function () {
         updateState("disconnected");
     });
 
+    
+    function updateUI() {
+        
+            var clicked = false;
+    $(".fa-ellipsis-v").click(function(){
+        if (clicked == false){
+            $("#signout").fadeIn("fast");
+            clicked = true;
+        } else {
+            $("#signout").fadeOut("fast");
+            clicked = false;
+        }
+        
+    });
+
+    $("#signout").click(function(){
+        $(this).fadeOut("fast");
+          localStorage.removeItem("otr.oauth.token");
+        console.log(localStorage.getItem("otr.oauth.token"));
+        updateState("disconnected");
+        location.reload();
+        $(".signin-container, #signin").fadeIn("slow");
+        
+    })
+        console.log("hi!")
+        $(".signin-container, #signin").css({"display": "none"});
+        $("#main").css({"display": "inherit"});
+        $(".fa-ellipsis-v").css({"opacity":"1"});
+        
+        
+    }
 
     // Initialize swagger, point to a resource listing
     new SwaggerClient({
@@ -49,9 +79,8 @@ $(document).ready(function () {
         if (token) {
             window.swagger.clientAuthorizations.authz.oauth2 =
             new SwaggerClient.ApiKeyAuthorization("Authorization", "Bearer " + token, "header");
-             $(".signin-container, #signin").css({"display": "none"});
-             $("#main").css({"display": "inherit"});
             analyzeReadings();
+            updateUI();
 
         // Otherwise go to disconnect state
         } else {
@@ -81,9 +110,13 @@ function updateState(updateStateTo){
     if (localStorage.getItem("otr.oauth.token")) {
         $("#signin").addClass("hidden");
         $("#signout").removeClass("hidden");
+        $(".signin-container").fadeOut();
+        $(".fa-ellipsis-v").fadeIn();
     } else {
         $("#signin").removeClass("hidden");
         $("#signout").addClass("hidden");
+        $(".signin-container").fadeIn();
+        $(".fa-ellipsis-v").fadeOut();
     }
 }
 
