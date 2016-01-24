@@ -297,14 +297,65 @@ function get_dates_diff_week(week_diff){
     return dates;
 }
 
+
 function get_avgs_for_dates(dates){
     var daily_avgs = JSON.parse(localStorage.getItem("bg_avg"));
-    var avgs = []
+    var avgs = [0,0,0,0,0,0,0];
     for (var i = 0; i < dates.length; i++){
-        avgs.push(daily_avgs[dates[i]]);
+        if (daily_avgs[dates[i]])
+            avgs[i] = daily_avgs[dates[i]];
     }
     return avgs;
 }
+
+function get_freqs_for_dates(dates){
+    var daily_avgs = JSON.parse(localStorage.getItem("bg_frequency"));
+    var avgs = [0,0,0,0,0,0,0];
+    for (var i = 0; i < dates.length; i++){
+        if (daily_avgs[dates[i]])
+            avgs[i] = daily_avgs[dates[i]];
+    }
+    return avgs;
+}
+
+function get_avgs_for_week(){
+    var DayLength = 86400000;
+    var now = new Date();
+    var today = new Date(now - (now.valueOf() % DayLength) + (5.0/24) * DayLength);
+    var wkday = (7 + (-1 + today.getDay())) % 7;
+    var end_time = today.valueOf() - (wkday * DayLength) - 1;
+    var start_time = today.valueOf() - ((wkday + 7) * DayLength);
+    var week_adjustment = (week_offset + 1) * 7 * DayLength;
+    var Sunday = new Date(end_time + week_adjustment);
+    var Monday = new Date(start_time + week_adjustment);
+    console.log(Sunday);
+    console.log(Monday);
+    dates = [];
+    for (var i = 0; i < 7; i++){
+        dates.push((new Date(Monday.valueOf() + i * DayLength)).toDateString());
+    }
+    return get_avgs_for_dates(dates);
+}
+
+function get_freqs_for_week(){
+    var DayLength = 86400000;
+    var now = new Date();
+    var today = new Date(now - (now.valueOf() % DayLength) + (5.0/24) * DayLength);
+    var wkday = (7 + (-1 + today.getDay())) % 7;
+    var end_time = today.valueOf() - (wkday * DayLength) - 1;
+    var start_time = today.valueOf() - ((wkday + 7) * DayLength);
+    var week_adjustment = (week_offset + 1) * 7 * DayLength;
+    var Sunday = new Date(end_time + week_adjustment);
+    var Monday = new Date(start_time + week_adjustment);
+    console.log(Sunday);
+    console.log(Monday);
+    dates = [];
+    for (var i = 0; i < 7; i++){
+        dates.push((new Date(Monday.valueOf() + i * DayLength)).toDateString());
+    }
+    return get_freqs_for_dates(dates);
+}
+
 
 function get_freqs_for_dates(dates){
     var daily_avgs = JSON.parse(localStorage.getItem("bg_frequency"));
