@@ -3,6 +3,7 @@ var bg_frequency = {};
 var bg_avg = {};
 var bg_dates = [];
 var allReadings;
+var week_offset = 0;
 
 // Wait for dom before loading
 $(document).ready(function () {
@@ -224,4 +225,191 @@ function atleastNConsecutiveDays(n, bg_dates) {
         $("#consecutive-dates").html("Get on track! Record for " + (n-count) + " more consecutive days!");
     }
 
+}
+
+function past_week(){
+    week_offset -= 1;
+    update_graph_week();
+}
+
+function next_week(){
+    if(week_offset < 0) {
+        week_offset += 1;
+        update_graph_week();
+    }
+}
+
+function update_graph_week() {
+    var week_data;
+    if (onFrequency) {
+        week_data = get_freqs_x_week();
+    } else {
+        week_data = get_avgs_x_week();
+    }
+    var points = myNewChart["datasets"][0]["points"];
+    console.log(points.length);
+    for (var i = 0; i < points.length; i++) {
+        points[i].value = week_data[i];
+    }
+    myNewChart.update();
+}
+
+function get_avgs_x_week(){
+    var dates = get_dates_diff_week(week_offset);
+    if(week_offset == 0) {
+        return this_week_avg(bg_avg, bg_dates);
+    } else {        
+        return get_avgs_for_dates(dates);
+    }
+    
+}
+
+function get_freqs_x_week(){
+    var dates = get_dates_diff_week(week_offset);
+    if(week_offset == 0) {
+        return this_week_frequency(bg_frequency, bg_dates);
+    } else {        
+        return get_freqs_for_dates(dates);
+    }
+}
+
+function get_dates_diff_week(week_diff){
+    var DayLength = 86400000;
+    var now = new Date();
+    var today = new Date(now - (now.valueOf() % DayLength) + (5.0/24) * DayLength);
+    wkday = today.getDay();
+    var end_time = today.valueOf() - ((wkday - 1) * DayLength) - 1;
+    var start_time = today.valueOf() - ((wkday + 6) * DayLength);
+    var week_adjustment = (week_diff + 1) * 7 * DayLength;
+    var Sunday = new Date(end_time + week_adjustment);
+    var Monday = new Date(start_time + week_adjustment);
+    dates = [];
+    date_array = JSON.parse(localStorage.getItem("bg_dates"));
+    for (var d = 0; d < date_array.length; d++){
+        date = new Date(date_array[d]);
+        if (date < Monday)
+            continue;
+        if (date > Sunday)
+            return dates;
+        else
+            dates.push(date_array[d]);
+    }
+    return dates;
+}
+
+function get_avgs_for_dates(dates){
+    var daily_avgs = JSON.parse(localStorage.getItem("bg_avg"));
+    var avgs = []
+    for (var i = 0; i < dates.length; i++){
+        avgs.push(daily_avgs[dates[i]]);
+    }
+    return avgs;
+}
+
+function get_freqs_for_dates(dates){
+    var daily_avgs = JSON.parse(localStorage.getItem("bg_frequency"));
+    var freqs = []
+    for (var i = 0; i < dates.length; i++){
+        freqs.push(daily_avgs[dates[i]]);
+    }
+    return freqs;
+}
+
+function get_cumulative_avg(dates){
+    var daily_avgs = JSON.parse(localStorage.getItem("bg_avg"));
+    var sum = 0.0;
+    for (var i = 0; i < dates.length; i++){
+        console.log(daily_avgs[dates[i]]);
+        sum += parseInt(daily_avgs[dates[i]]);
+    }
+    return Math.round(sum / dates.length);
+}
+
+var onFrequency = true;
+var myNewChart;
+var week_avg, week_freq;
+
+function this_week_avg(bg_avg, bg_dates) {
+    var startOfWeek = moment().startOf('isoweek').toDate();
+    var endOfWeek   = moment().endOf('isoweek').toDate();
+    var thisWeekAvg = new Array(7);
+
+    for(var i = 0; i < bg_dates.length; i++) {
+      var current_date = new Date(bg_dates[i]);
+      if ((current_date <= endOfWeek && 
+        current_date >= startOfWeek)) {
+        var index = current_date.getDay();
+        thisWeekAvg[index] = bg_avg[current_date.toDateString()];
+      }
+    }
+    return thisWeekAvg;
+}
+
+function load_freq(){
+    var week_freq = get_freqs_x_week();
+    console.log(week_freq);
+    var points = myNewChart["datasets"][0]["points"];
+    console.log(points.length);
+    for (var i = 0; i < points.length; i++) {
+        points[i].value = week_freq[i];
+    }
+    onFrequency = true;
+    myNewChart.update();
+}
+
+function load_avg(){
+    var week_avg = get_avgs_x_week();
+     console.log(week_avg);
+    var points = myNewChart["datasets"][0]["points"];
+    console.log(points.length);
+    for (var i = 0; i < points.length; i++) {
+        points[i].value = week_avg[i];
+    }
+    onFrequency = false;
+    myNewChart.update();
+}
+
+function this_week_frequency(bg_frequency, bg_dates) {
+    var startOfWeek = moment().startOf('isoweek').toDate();
+    var endOfWeek   = moment().endOf('isoweek').toDate();
+    var thisWeekFreq = new Array(7);
+
+    for(var i = 0; i < bg_dates.length; i++) {
+      var current_date = new Date(bg_dates[i]);
+      if ((current_date <= endOfWeek && 
+        current_date >= startOfWeek)) {
+        var index = current_date.getDay();
+        thisWeekFreq[index] = bg_frequency[current_date.toDateString()];
+      }
+    }
+    return thisWeekFreq;
+}
+
+function drawGraph() {
+
+    bg_frequency = JSON.parse(localStorage.getItem("bg_frequency"));
+    bg_avg = JSON.parse(localStorage.getItem("bg_avg"));
+    bg_dates = JSON.parse(localStorage.getItem("bg_dates"))
+    allReadings = JSON.parse(localStorage.getItem("allReadings"));
+
+    var week_data = this_week_avg(bg_frequency, bg_dates);
+    var weekdays = ["Mon", "Tu", "Wed", "Th", "Fri", "Sat", "Sun"];
+      var readingsData = {
+        labels : weekdays,
+        datasets : [{
+                  fillColor: "rgba(220,220,220,0.2)",
+                  strokeColor: "rgba(220,220,220,1)",
+                  pointColor: "#1f77b4",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#17becf",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: week_data
+            }]
+      };
+
+    var canvas = $("#readings").get(0);
+    var ctx = canvas.getContext("2d");
+    myNewChart = new Chart(ctx).Line(readingsData, {
+    scaleShowGridLines : false
+    }); 
 }
