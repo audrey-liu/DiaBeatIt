@@ -1,0 +1,48 @@
+body {
+    background-color: #eee;
+}
+
+.jumbotron {
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 10px;
+}
+
+.above-target {
+    color: #98173D;
+}
+
+.below-target {
+    color: #0080BA;
+}
+
+.in-range {
+    color: #5A8909;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 30px;
+    background-color: #222;
+    color: #9d9d9d;
+}
+
+.footer a {
+    color: #9d9d9d
+}
+
+.footer a:focus,.footer a:hover {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+@media screen and (min-width: 768px) {
+
+    .jumbotron {
+        padding-bottom: 18px;
+    }
+}

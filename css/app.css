@@ -1,0 +1,80 @@
+.slider,
+.slider img {
+  margin-bottom: 0;
+  height: 150px;
+}
+
+body {
+    font-family: "Avenir Next";
+  }
+
+.content {
+    background-color: white !important;
+}
+
+  .bar {
+      background-color: #00c3ff !important;
+  }
+
+    .bar .title{
+      color: white !important;
+  }
+
+  .subtitle {
+      opacity: .7
+  }
+
+.btn-block {
+    width: 90% !important;
+     background-color: #00c3ff;
+    color: white;
+    margin: 0 auto;
+}
+
+.last-reading {
+    width: 100vw;
+    height: 100vw;
+    outline: rgba(0,0,0, .6);
+}
+
+.de {
+    color: #666;
+    font-weight: 400;
+}
+
+.center {
+    text-align: center;
+}
+
+#winning-dates {
+  text-align: center;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+h1,h2,h3,h4,p {
+  font-family: "Avenir Next";
+}
+
+#main {
+    display: none;
+}
+
+.signin-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
+
+#signin {
+        font-weight: 200;
+}
+
+#bgval {
+    font-size: 4em;
+    margin: 50px;
+}
+
+
