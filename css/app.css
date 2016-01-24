@@ -176,3 +176,21 @@ h1,h2,h3,h4,p {
   font-size: 0.6em;
   text-align: center;
 }
+
+.button-container{
+    width: 100vw;
+    display: flex;
+    align-items:stretch;
+}
+
+.button-container > .btn{
+    margin-bottom: 10px;
+    color: black;
+    background-color: white;
+    border-bottom: 2px solid rgba(0,40,200, .3);
+    width: 50vw;
+    height: 50px;
+    font-size: .7em;
+}
+
+.
