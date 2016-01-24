@@ -171,3 +171,8 @@ h1,h2,h3,h4,p {
     margin: 10px auto;
     width: 90vw;
 }
+
+#graph_heading {
+  font-size: 0.6em;
+  text-align: center;
+}

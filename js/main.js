@@ -263,12 +263,16 @@ function atleastNConsecutiveDays(n, bg_dates) {
 function past_week(){
     week_offset -= 1;
     update_graph_week();
+    $("#next_week").css("opacity", "1.0");
 }
 
 function next_week(){
     if(week_offset < 0) {
         week_offset += 1;
         update_graph_week();
+        $("#next_week").css("opacity", "1.0");
+    } else {
+        $("#next_week").css("opacity", "0.2");
     }
 }
 
@@ -276,8 +280,10 @@ function update_graph_week() {
     var week_data;
     if (onFrequency) {
         week_data = get_freqs_for_week();
+        $("#graph_heading").text("Number of Blood Glucose Measurements Per Day");
     } else {
         week_data = get_avgs_for_week();
+        $("#graph_heading").text("Average Blood Glucose Level Per Day");
     }
     var points = myNewChart["datasets"][0]["points"];
     console.log(points.length);
@@ -465,12 +471,14 @@ function drawGraph() {
     bg_avg = JSON.parse(localStorage.getItem("bg_avg"));
     bg_dates = JSON.parse(localStorage.getItem("bg_dates"))
     allReadings = JSON.parse(localStorage.getItem("allReadings"));
+    $("#graph_heading").text("Number of Blood Glucose Measurements Per Day");
 
     var week_data = get_freqs_for_week();
     var weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      var readingsData = {
+    var readingsData = {
         labels : weekdays,
         datasets : [{
+                  label: "Number of Blood Glucose Measurements/Day",
                   fillColor: "rgba(220,220,220,0.2)",
                   strokeColor: "rgba(220,220,220,1)",
                   pointColor: "#1f77b4",
