@@ -275,9 +275,9 @@ function next_week(){
 function update_graph_week() {
     var week_data;
     if (onFrequency) {
-        week_data = get_freqs_x_week();
+        week_data = get_freqs_for_week();
     } else {
-        week_data = get_avgs_x_week();
+        week_data = get_avgs_for_week();
     }
     var points = myNewChart["datasets"][0]["points"];
     console.log(points.length);
@@ -287,24 +287,6 @@ function update_graph_week() {
     myNewChart.update();
 }
 
-function get_avgs_x_week(){
-    var dates = get_dates_diff_week(week_offset);
-    if(week_offset == 0) {
-        return this_week_avg(bg_avg, bg_dates);
-    } else {        
-        return get_avgs_for_dates(dates);
-    }
-    
-}
-
-function get_freqs_x_week(){
-    var dates = get_dates_diff_week(week_offset);
-    if(week_offset == 0) {
-        return this_week_frequency(bg_frequency, bg_dates);
-    } else {        
-        return get_freqs_for_dates(dates);
-    }
-}
 
 function get_dates_diff_week(week_diff){
     var DayLength = 86400000;
@@ -361,6 +343,10 @@ function get_avgs_for_week(){
     var week_adjustment = (week_offset + 1) * 7 * DayLength;
     var Sunday = new Date(end_time + week_adjustment);
     var Monday = new Date(start_time + week_adjustment);
+    var dateString = (Monday.getMonth() + 1) + "/" + Monday.getDate() + "/" 
+    + Monday.getFullYear().toString().substr(2,2);
+
+    $("#current_week").text("Week of " + dateString);
     console.log(Sunday);
     console.log(Monday);
     dates = [];
@@ -380,6 +366,10 @@ function get_freqs_for_week(){
     var week_adjustment = (week_offset + 1) * 7 * DayLength;
     var Sunday = new Date(end_time + week_adjustment);
     var Monday = new Date(start_time + week_adjustment);
+    var dateString = (Monday.getMonth() + 1) + "/" + Monday.getDate() + "/" 
+    + Monday.getFullYear().toString().substr(2,2);
+
+    $("#current_week").text("Week of " + dateString);
     console.log(Sunday);
     console.log(Monday);
     dates = [];
@@ -430,7 +420,7 @@ function this_week_avg(bg_avg, bg_dates) {
 }
 
 function load_freq(){
-    var week_freq = get_freqs_x_week();
+    var week_freq = get_freqs_for_week();
     console.log(week_freq);
     var points = myNewChart["datasets"][0]["points"];
     console.log(points.length);
@@ -442,7 +432,7 @@ function load_freq(){
 }
 
 function load_avg(){
-    var week_avg = get_avgs_x_week();
+    var week_avg = get_avgs_for_week();
      console.log(week_avg);
     var points = myNewChart["datasets"][0]["points"];
     console.log(points.length);
@@ -476,8 +466,8 @@ function drawGraph() {
     bg_dates = JSON.parse(localStorage.getItem("bg_dates"))
     allReadings = JSON.parse(localStorage.getItem("allReadings"));
 
-    var week_data = this_week_avg(bg_frequency, bg_dates);
-    var weekdays = ["Mon", "Tu", "Wed", "Th", "Fri", "Sat", "Sun"];
+    var week_data = get_freqs_for_week();
+    var weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
       var readingsData = {
         labels : weekdays,
         datasets : [{
