@@ -88,3 +88,8 @@ h1,h2,h3,h4,p {
     height: 90vw;
 }
 
+#graph_card {
+  text-align: center;
+  padding: 1em;
+}
+

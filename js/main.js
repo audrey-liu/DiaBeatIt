@@ -227,4 +227,53 @@ function atleastNConsecutiveDays(n, bg_dates) {
 
 }
 
+function drawGraph() {
+          var readings;
+          $.getJSON( "data/readings.json", function( data ) {
+            readings = data.bloodGlucose;
+            console.log(data);
+            var items = [];
 
+              for (var i in readings) {
+                  items.push('<li class="table-view-cell"><a class="navigate-right" href="#">' + readings[i].bgValue.value + " " + readings[i].bgValue.units + '</a></li>' );
+              }
+
+              readings_data = [];
+              for (var i = 3; i < readings.length; i++) {
+                  readings_data.push(readings[i].bgValue.value);
+              }
+
+              console.log(readings_data.length);
+
+              var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+              var readingsData = {
+                labels : weekdays,
+                datasets : [{
+                          label: "My First dataset",
+                          fillColor: "rgba(220,220,220,0.2)",
+                          strokeColor: "rgba(220,220,220,1)",
+                          pointColor: "#1f77b4",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#17becf",
+                          pointHighlightStroke: "rgba(220,220,220,1)",
+                          data: readings_data
+                    }]
+              };
+
+              var canvas = $("#readings").get(0);
+              var ctx = canvas.getContext("2d");
+              console.log(ctx);
+              var myNewChart = new Chart(ctx).Line(readingsData, {
+                scaleShowGridLines : false
+              });
+              location.reload();
+
+
+
+             // $( "<ul/>", {
+             //    "class": "table-view",
+             //    html: items.join( "" )
+             //  }).appendTo( ".card" );
+
+            });
+       }

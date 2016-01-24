@@ -19,8 +19,11 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.min.js"></script>
         <script src="js/swagger-client.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/chart.js"></script>
         <script src="js/main.js"> </script>
-        <script src="js/award.js"></script>
+        <script src="js/push.js"></script>
+        <script src="js/ratchet.min.js"></script>
     </head>
     <body>
        
@@ -44,7 +47,7 @@
         <div id="main">
                 <h3 class="content-padded center de"><br>Your last reading was...<br></h3>
                 <div id="last-reading" class="content-padded center"></div>
-                <a href="readingsChart.html" data-transition="slide-in"><button class="btn btn-block">See more readings</button></a>
+                <a href="./readingsChart.html" data-transition="slide-in"><button class="btn btn-block">See more readings</button></a>
                 <div class="card">
                     <div id="winning-dates" class="content-padded center"></div>
                 </div>
@@ -55,20 +58,15 @@
        
 
     </div>
-             <script src="js/push.js"></script>
-    <script src="js/ratchet.min.js"></script>
-                <script>
-        var checkPage = function(){
-    //Only run if twitter-widget exists on page
-    if(document.getElementById('readings')) {
-//        loadTwitterFeed(document,"script","twitter-wjs");
-                drawGraph();
-
-    }
-};
-
-window.addEventListener('push', checkPage);
-        </script>
+            
+    <script>
+      var checkPage = function(){
+        if(document.getElementById('readings')) {
+            drawGraph();
+          }
+      };
+      window.addEventListener('push', checkPage);
+      </script>
 
   </body>
 </html>
