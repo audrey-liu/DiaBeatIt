@@ -13,7 +13,7 @@ body {
 }
 
   .bar {
-      background-color: #00c3ff !important;
+      background-color: #5EB2F2 !important;
 /*      display: none;*/
   }
 
@@ -27,7 +27,7 @@ body {
 
 .btn-block {
     width: 90% !important;
-     background-color: #00c3ff;
+     background-color: #5EB2F2;
     color: white;
     margin: 0 auto;
 }
@@ -133,7 +133,7 @@ h1,h2,h3,h4,p {
 
 .em {
     font-weight: 300;
-    color: #00c3ff;
+    color: #5EB2F2;
 }
 
 #readings-title {
@@ -173,7 +173,8 @@ h1,h2,h3,h4,p {
 }
 
 #graph_heading {
-  font-size: 0.6em;
+  padding: 1em;
+  font-size: 0.8em;
   text-align: center;
 }
 
@@ -187,10 +188,14 @@ h1,h2,h3,h4,p {
     margin-bottom: 10px;
     color: black;
     background-color: white;
-    border-bottom: 2px solid rgba(0,40,200, .3);
     width: 50vw;
+    border: none;
     height: 50px;
-    font-size: .7em;
+    font-size: .8em;
+    border-radius: 0;
+    box-shadow: none;
 }
 
-.
+.button-container > .btn:focus {
+ border: none;
+}

@@ -282,9 +282,14 @@ function update_graph_week() {
     if (onFrequency) {
         week_data = get_freqs_for_week();
         $("#graph_heading").text("Number of Blood Glucose Measurements Per Day");
+        $("#freq_btn").css("border-bottom", "solid 3px gray");
+        $("#avg_btn").css("border-bottom", "solid 1px #CDE4F5");
+       
     } else {
         week_data = get_avgs_for_week();
         $("#graph_heading").text("Average Blood Glucose Level Per Day");
+        $("#freq_btn").css("border-bottom", "solid 1px #CDE4F5");
+        $("#avg_btn").css("border-bottom", "solid 3px gray");
     }
     var points = myNewChart["datasets"][0]["points"];
     console.log(points.length);
@@ -430,6 +435,9 @@ function load_freq(){
     var week_freq = get_freqs_for_week();
     console.log(week_freq);
     var points = myNewChart["datasets"][0]["points"];
+    $("#graph_heading").text("Number of Blood Glucose Measurements Per Day");
+    $("#freq_btn").css("border-bottom", "solid 3px gray");
+    $("#avg_btn").css("border-bottom", "solid 1px #CDE4F5");
     console.log(points.length);
     for (var i = 0; i < points.length; i++) {
         points[i].value = week_freq[i];
@@ -442,6 +450,9 @@ function load_avg(){
     var week_avg = get_avgs_for_week();
      console.log(week_avg);
     var points = myNewChart["datasets"][0]["points"];
+    $("#graph_heading").text("Average Blood Glucose Level Per Day");
+    $("#avg_btn").css("border-bottom", "solid 3px gray");
+    $("#freq_btn").css("border-bottom", "solid 1px #CDE4F5");
     console.log(points.length);
     for (var i = 0; i < points.length; i++) {
         points[i].value = week_avg[i];
@@ -473,6 +484,8 @@ function drawGraph() {
     bg_dates = JSON.parse(localStorage.getItem("bg_dates"))
     allReadings = JSON.parse(localStorage.getItem("allReadings"));
     $("#graph_heading").text("Number of Blood Glucose Measurements Per Day");
+    $("#freq_btn").css("border-bottom", "solid 3px gray");
+    $("#avg_btn").css("border-bottom", "solid 1px #CDE4F5");
 
     var week_data = get_freqs_for_week();
     var weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
