@@ -13,78 +13,122 @@
     <link rel="stylesheet" href="css/ratchet.min.css">
     <link rel="stylesheet" href="css/ratchet-theme-android.min.css">
     <link rel="stylesheet" href="css/app.css">
+    <script src="js/swagger-client.js"></script>
     <script src="js/ratchet.min.js"></script>
     <script src="js/push.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="js/chart.js"></script>
      <script src="js/app.js"></script>
+     <script src="js/main.js"></script>
   </head>
   <body>
     <header class="bar bar-nav">
-
         <h1 class="title">
-
           DiaBeatIt | <span class="subtitle">Past Readings</span>
-
         </h1>
-<!--        <button onclick='drawGraph();'> Draw Graph </button>-->
     </header>
 
     <div class="content">
         <div id='graph_card' class="card graph">
-            <!--    DYNAMICALLY LOAD CONTENT HERE & VISUALIZE   -->
-                  <canvas id="readings" height="250"></canvas>
+          <canvas id="readings" height="250"></canvas>
         </div>
-    <script>
-      function drawGraph() {
-          var readings;
-          $.getJSON( "data/readings.json", function( data ) {
-            readings = data.bloodGlucose;
-            console.log(data);
-            var items = [];
+        <button class="btn btn-block" onclick="load_freq();">Reading Frequency</button>
+         <br>
+        <button class="btn btn-block" onclick="load_avg();">Average Reading</button>
+      <script>
 
-              for (var i in readings) {
-                  items.push('<li class="table-view-cell"><a class="navigate-right" href="#">' + readings[i].bgValue.value + " " + readings[i].bgValue.units + '</a></li>' );
+      var onFrequency = true;
+      var myNewChart;
+      var week_avg, week_freq;
+
+      function this_week_avg(bg_avg, bg_dates) {
+            var startOfWeek = moment().startOf('isoweek').toDate();
+            var endOfWeek   = moment().endOf('isoweek').toDate();
+            var thisWeekAvg = new Array(7);
+
+            for(var i = 0; i < bg_dates.length; i++) {
+              var current_date = new Date(bg_dates[i]);
+              if ((current_date <= endOfWeek && 
+                current_date >= startOfWeek)) {
+                var index = current_date.getDay();
+                thisWeekAvg[index] = bg_avg[current_date.toDateString()];
               }
+            }
+            return thisWeekAvg;
+        }
 
-              readings_data = [];
-              for (var i = 3; i < readings.length; i++) {
-                  readings_data.push(readings[i].bgValue.value);
+      function load_freq(){
+        var week_freq = this_week_avg(bg_frequency, bg_dates);
+        var points = myNewChart["datasets"][0]["points"];
+        console.log(points.length);
+        for (var i = 0; i < points.length; i++) {
+          points[i].value = week_freq[i];
+         }
+         myNewChart.update();
+      }
+
+      function load_avg(){
+        var week_avg = this_week_avg(bg_avg, bg_dates);
+        var points = myNewChart["datasets"][0]["points"];
+        console.log(points.length);
+        for (var i = 0; i < points.length; i++) {
+          points[i].value = week_avg[i];
+         }
+         myNewChart.update();
+       }
+
+      function this_week_frequency(bg_frequency, bg_dates) {
+            var startOfWeek = moment().startOf('isoweek').toDate();
+            var endOfWeek   = moment().endOf('isoweek').toDate();
+            var thisWeekFreq = new Array(7);
+
+            for(var i = 0; i < bg_dates.length; i++) {
+              var current_date = new Date(bg_dates[i]);
+              if ((current_date <= endOfWeek && 
+                current_date >= startOfWeek)) {
+                var index = current_date.getDay();
+                thisWeekFreq[index] = bg_frequency[current_date.toDateString()];
               }
+            }
+            return thisWeekFreq;
+        }
 
-              console.log(readings_data.length);
+        function drawGraph() {
+         
+          bg_frequency = JSON.parse(localStorage.getItem("bg_frequency"));
+          bg_avg = JSON.parse(localStorage.getItem("bg_avg"));
+          bg_dates = JSON.parse(localStorage.getItem("bg_dates"))
+          allReadings = JSON.parse(localStorage.getItem("allReadings"));
+          
+          var week_data = [];
 
-              var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+          if (onFrequency) {
+            week_data = this_week_frequency(bg_frequency, bg_dates);
+          } else {
+            week_data = this_week_avg(bg_avg, bg_dates);
+          }
+         
+          var weekdays = ["Mon", "Tu", "Wed", "Th", "Fri", "Sat", "Sun"];
               var readingsData = {
                 labels : weekdays,
                 datasets : [{
-                          label: "My First dataset",
                           fillColor: "rgba(220,220,220,0.2)",
                           strokeColor: "rgba(220,220,220,1)",
                           pointColor: "#1f77b4",
                           pointStrokeColor: "#fff",
                           pointHighlightFill: "#17becf",
                           pointHighlightStroke: "rgba(220,220,220,1)",
-                          data: readings_data
+                          data: week_data
                     }]
               };
 
-              var canvas = $("#readings").get(0);
-              var ctx = canvas.getContext("2d");
-              console.log(ctx);
-              var myNewChart = new Chart(ctx).Line(readingsData, {
-                scaleShowGridLines : false
-              });
-
-
-             // $( "<ul/>", {
-             //    "class": "table-view",
-             //    html: items.join( "" )
-             //  }).appendTo( ".card" );
-
-            });
-       }
+          var canvas = $("#readings").get(0);
+          var ctx = canvas.getContext("2d");
+          myNewChart = new Chart(ctx).Line(readingsData, {
+            scaleShowGridLines : false
+          }); 
+        }
         drawGraph();
         </script>
 

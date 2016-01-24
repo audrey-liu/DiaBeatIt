@@ -31,7 +31,6 @@
        <h1 class="title">
          DiaBeatIt 
         </h1>
-
     </header>
         
 
@@ -41,7 +40,6 @@
         <div class="signin-container">
         <button id="signin" type="submit" class="btn btn-block navbar-btn hidden">Sign In</button>
         </div>
-<!--        <button id="signout" type="submit" class="btn btn-default navbar-btn hidden">Sign Out</button>-->
         
         
         <div id="main">
@@ -62,7 +60,7 @@
     <script>
       var checkPage = function(){
         if(document.getElementById('readings')) {
-            drawGraph();
+            location.reload();
           }
       };
       window.addEventListener('push', checkPage);
