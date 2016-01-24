@@ -271,7 +271,8 @@ function next_week(){
         week_offset += 1;
         update_graph_week();
         $("#next_week").css("opacity", "1.0");
-    } else {
+    } 
+    if(week_offset === 0) {
         $("#next_week").css("opacity", "0.2");
     }
 }
