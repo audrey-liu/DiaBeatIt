@@ -1,5 +1,6 @@
 
 var bg_frequency = {};
+var bg_avg = {};
 var bg_dates = [];
 
 // Wait for dom before loading
@@ -98,6 +99,11 @@ function analyzeReadings() {
 
         if (searchResponse.obj.bloodGlucose && searchResponse.obj.bloodGlucose.length > 0) {
             allReadings = searchResponse.obj.bloodGlucose;
+
+            if (localStorage.getItem("allReadings") === null) {
+                localStorage.setItem('allReadings', 
+                    JSON.stringify(allReadings));
+            }
             getLastReading();
             countFrequency(allReadings);
             checkAwards();
@@ -139,12 +145,25 @@ function countFrequency(allReadings) {
         currentDate = new Date(allReadings[i].readingDate);
         dateString = currentDate.toDateString();
         if (bg_frequency.hasOwnProperty(dateString)) {
+            var prev_avg = bg_avg[dateString];
+            var prev_count = bg_frequency[dateString];
             bg_frequency[dateString] += 1;
+            bg_avg[dateString] = ((prev_avg * prev_count + 
+                allReadings[i]["bgValue"].value) / (prev_count + 1.0)).toFixed(0);
         } else {
             bg_dates.push(dateString);
             bg_frequency[dateString] = 1;
+            bg_avg[dateString] = allReadings[i]["bgValue"].value;
         }
     }
+
+    localStorage.setItem('bg_frequency', 
+        JSON.stringify(bg_frequency));
+    localStorage.setItem('bg_dates', 
+        JSON.stringify(bg_dates));
+    localStorage.setItem('bg_avg',
+        JSON.stringify(bg_avg));
+   
 }
 
 function getLastReading() {
