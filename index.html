@@ -11,6 +11,7 @@
       <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700">
         <link rel="stylesheet" href="css/ratchet.min.css">
         <link rel="stylesheet" href="css/ratchet-theme-android.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/app.css">
         <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script src="js/countUp.min.js"></script>
@@ -20,22 +21,29 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.min.js"></script>
         <script src="js/swagger-client.js"></script>
         <script src="js/main.js"> </script>
-        <script src="js/award.js"></script>
+<!--        <script src="js/award.js"></script>-->
     </head>
     <body>
        
     <header class="bar bar-nav">
        <h1 class="title">
-         DiaBeatIt 
+         <a>DiaBeatIt </a>
+        <i class="fa fa-ellipsis-v"></i>
         </h1>
-
+        <section id="signout" class="card  sign-out">
+            <section class="content-padded">Sign Out</section>
+        </section>
     </header>
+        
+
         
 
 
     <div class="content">
     
-        <div class="signin-container">
+        <div class="signin-container" style="display: none">
+        <h1 class="sign-in-title">Dia<span class="em">BeatIt</span></h1><br>
+            <aside class=" description content-padded center">Manage your diabetes better by setting goals, and tracking your progress with informative visuals.</aside>
         <button id="signin" type="submit" class="btn btn-block navbar-btn hidden">Sign In</button>
         </div>
 <!--        <button id="signout" type="submit" class="btn btn-default navbar-btn hidden">Sign Out</button>-->
@@ -57,18 +65,14 @@
     </div>
              <script src="js/push.js"></script>
     <script src="js/ratchet.min.js"></script>
-                <script>
-        var checkPage = function(){
-    //Only run if twitter-widget exists on page
-    if(document.getElementById('readings')) {
-//        loadTwitterFeed(document,"script","twitter-wjs");
-                drawGraph();
-
-    }
-};
-
-window.addEventListener('push', checkPage);
-        </script>
+  <script>
+      var goToGraphs = function(){
+        if(document.getElementById('readings')) {
+            location.reload();
+          }
+      };
+      window.addEventListener('push', goToGraphs);
+      </script>
 
   </body>
 </html>

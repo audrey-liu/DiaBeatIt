@@ -14,6 +14,7 @@ body {
 
   .bar {
       background-color: #00c3ff !important;
+/*      display: none;*/
   }
 
     .bar .title{
@@ -61,10 +62,16 @@ h1,h2,h3,h4,p {
 }
 
 .signin-container {
+    display: none;
+    background-image: url(http://cdn1.theodysseyonline.com/files/2015/08/17/635754486350307613-1545715399_healthy.jpg);
+    background-size: cover;
+    background-position: 50% 50%;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
 
 }
 
@@ -88,3 +95,74 @@ h1,h2,h3,h4,p {
     height: 90vw;
 }
 
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sign-out{
+    display: none;
+    width: 50vw;
+    position: absolute;
+    right: 2%;
+    text-align: center;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px -2px;
+}
+
+.sign-in-title {
+    margin-top: -40px;
+    font-weight: 300;
+    font-size: 3.7em;
+    color: black;
+}
+
+.description {
+    font-size: .8em;
+    margin-top: -20px;
+    margin-bottom: 20px;
+    width: 80%;
+}
+
+.em {
+    font-weight: 300;
+    color: #00c3ff;
+}
+
+#readings-title {
+    margin-left: 10%;
+}
+
+.back {
+    
+}
+
+.fa-ellipsis-v {
+}
+
+.prev-graph p, .next-graph p {
+    padding-right: 15%;
+    padding-left: 15%;
+    margin-bottom: 20%;
+    position: relative;
+    top: -3px;
+}
+
+.prev-graph, .next-graph {
+    margin-top: 10px;
+    display: flex;
+    width: 20vw;
+}
+
+#graph-controls p, #graph-controls i {
+    color: #999 !important;
+}
+
+#graph-controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px auto;
+    width: 90vw;
+}
