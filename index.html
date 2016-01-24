@@ -57,7 +57,17 @@
     </div>
              <script src="js/push.js"></script>
     <script src="js/ratchet.min.js"></script>
-        <script>
+                <script>
+        var checkPage = function(){
+    //Only run if twitter-widget exists on page
+    if(document.getElementById('readings')) {
+//        loadTwitterFeed(document,"script","twitter-wjs");
+                drawGraph();
+
+    }
+};
+
+window.addEventListener('push', checkPage);
         </script>
 
   </body>

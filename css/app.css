@@ -77,4 +77,14 @@ h1,h2,h3,h4,p {
     margin: 50px;
 }
 
+.graph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#readings {
+    height: 90vw;
+}
 

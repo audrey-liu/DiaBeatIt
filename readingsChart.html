@@ -28,17 +28,15 @@
           DiaBeatIt | <span class="subtitle">Past Readings</span>
 
         </h1>
-        <button onclick='drawGraph();'> Draw Graph </button>
+<!--        <button onclick='drawGraph();'> Draw Graph </button>-->
     </header>
 
     <div class="content">
-      <canvas id="readings" width="500" height="500"></canvas>
-        <div class="card">
+        <div class="card graph">
             <!--    DYNAMICALLY LOAD CONTENT HERE & VISUALIZE   -->
+                  <canvas id="readings" height="250"></canvas>
         </div>
-    </div>
-      <script>
-
+    <script>
       function drawGraph() {
           var readings;
           $.getJSON( "data/readings.json", function( data ) {
@@ -87,6 +85,9 @@
 
             });
        }
-      </script> 
+        drawGraph();
+        </script>
+
+    </div>
   </body>
 </html>
